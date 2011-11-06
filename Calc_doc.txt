@@ -1,0 +1,18 @@
+Projet de calculette.
+
+Ce programme reprend l'organisation standard Erlang du modele d'application, a savoir:
+calc.app	-> liste des modules, applications, process enregistree...
+calc_app	-> behavior modele
+calc_sup	-> superviseur principal de l'application
+calc_gui	-> behavior wx_windows charger de gerer l'affichage et l'interface utilisateur
+calc_server	-> behavior gen_server charger de la communication entre process
+calc_store	-> behavior gen_server charger de memoriser et restituer les valeur de variable et de fonctions
+calc		-> fonctions d'analyse, de parse, de calcul...
+
+
+Todo
+
+organiser le stockage en utilisant mnesia
+utiliser un server pour stocker les informations d'affichage et permettre la gestion base 2,8,10,16
+assurer le focus clavier sur la zone de saisie par defaut
+afficher les expressions après analyse

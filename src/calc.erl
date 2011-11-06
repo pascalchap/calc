@@ -22,6 +22,7 @@ parse_evaluate(T,Aff) ->
 	end,
 	calc_server:display(Aff,T,Rep).
 
+%% Need to modifiy this in order to allow derive within an evaluation
 parse_derive(T,Aff) ->
     R = (catch getvarfunc(T)),
 	Rep = case R of
@@ -78,7 +79,7 @@ getuserfunc(N) ->
 	end.
 storeuserfunc(Name,Par,Desc,Text) -> 
 	calc_store:storefunc(Name,Par,Desc,Text),
-	io_lib:format("function ~p(~p) stored",[Name,Par]).
+	io_lib:format("function ~p(~p) = ~p stored",[Name,Par,print(Desc)]).
 
 getconst("pi") -> math:pi();
 getconst("e") -> math:exp(1).
