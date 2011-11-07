@@ -10,7 +10,7 @@ calc_store	-> behavior gen_server charger de memoriser et restituer les valeur d
 calc		-> fonctions d'analyse, de parse, de calcul...
 
 
-Todo
+Todo : un autre changement
 
 organiser le stockage en utilisant mnesia
 utiliser un server pour stocker les informations d'affichage et permettre la gestion base 2,8,10,16
