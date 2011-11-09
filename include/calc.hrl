@@ -112,6 +112,7 @@
 {func,{"cos",math}},
 {func,{"cosh",math}},
 {sep,"div"},
+{func,{"drv",calc}},
 {const,"e"},
 {sep,"eq"},
 {func,{"exp",math}},
