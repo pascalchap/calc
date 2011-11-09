@@ -2,7 +2,7 @@
 
 %% -compile(export_all).
 
--export([parse_evaluate/2, parse_derive/2, parse/1,evaluate/1,fact/1,int/1,frac/1,
+-export([parse_evaluate/2, parse_derive/2, parse/1,evaluate/1,fact/1,int/1,frac/1,drv/2,
 			derive/2,simplify/1,print/1,getvarfunc/1,testparse/0,test/1]).
 
 -include("../include/calc.hrl").
@@ -78,8 +78,9 @@ getuserfunc(N) ->
 		error -> throw({error,"function undefined"})
 	end.
 storeuserfunc(Name,Par,Desc,Text) -> 
-	calc_store:storefunc(Name,Par,Desc,Text),
-	io_lib:format("function ~p(~p) = ~p stored",[Name,Par,print(Desc)]).
+	Desc1 = simplify(Desc),
+	calc_store:storefunc(Name,Par,Desc1,Text),
+	io_lib:format("function ~p(~p) = ~p stored",[Name,Par,print(Desc1)]).
 
 getconst("pi") -> math:pi();
 getconst("e") -> math:exp(1).
@@ -227,6 +228,8 @@ totuple([],A) -> lists:reverse(A);
 totuple([H|T],A) -> totuple(T,[totuple(H)|A]).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+drv(F,[{var,X}]) ->
+	derive(F,X).
 
 fact(A) when is_integer(A), A >= 0 ->
 	fact(A,1);
@@ -326,6 +329,7 @@ getderive("log",A) -> {op,"/",{num,1},A};
 getderive("log10",A) -> {op,"/",{num,1},{op,"*",{num,math:log(10)},[A]}};
 getderive("sqrt",A) -> {op,"*",{num,0.5},{op,"^",A,{num,-0.5}}}.
 
+simplify({func,{"drv",_},[F,{var,X}]}) -> simplify(derive(F,X));
 simplify({func,N,[A]}) -> {func,N,[simplify(A)]};
 simplify({minus,A}) -> reduce({minus,simplify(A)});
 simplify({op,Op,A,B}) -> reduce({op,Op,simplify(A),simplify(B)});
