@@ -228,6 +228,8 @@ totuple([],A) -> lists:reverse(A);
 totuple([H|T],A) -> totuple(T,[totuple(H)|A]).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+drv({userfunc,N,A},[{var,X}]) ->
+	derive(evaluate(N,A),X);
 drv(F,[{var,X}]) ->
 	derive(F,X).
 
