@@ -317,6 +317,10 @@ derive({op,"^",A,B},V) -> {op,"*",
 											{op,"+",{op,"*",derive(B,V),{func,{"log",math},[A]}},
 													{op,"/",{op,"*",B,derive(A,V)},A}},
 											{op,"^",A,B}};
+derive({userfunc,N,A},V) -> 
+	{Sa,D,_} = getuserfunc(N),
+	Desc = replace(D,Sa,A),
+	derive(Desc,V);
 derive({func,{N,_},[{var,V}]},V) -> getderive(N,{var,V});
 derive({func,{N,_},[A]},V) -> {op,"*",derive(A,V),getderive(N,A)}.
 
