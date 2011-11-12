@@ -1,6 +1,6 @@
 {application, calc, 
  [{description, "a calculator"}, 
-  {vsn, "0.1.0"}, 
+  {vsn, "0.2.0"}, 
   {modules, [calc_app, 
              calc_sup,
 			 calcgui,
