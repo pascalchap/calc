@@ -217,16 +217,14 @@ keypress(?ARRG,#state{input = I}) ->
 	addinput(I," arrg ");
 keypress(?PI,#state{input = I}) ->
 	addinput(I," pi# ");
-	
+keypress(?DERIV,#state{input=I}) -> 
+	addinput(I,"drv(");	
 keypress(?CLEAR,#state{input=I}) -> 
 	wxTextCtrl:clear(I);
 
 keypress(?EGAL,#state{input=I,calc=Calc}) -> 
 	T = wxTextCtrl:getLineText(I,0),
 	evaluate(T,Calc);
-keypress(?DERIV,#state{input=I,calc=Calc}) -> 
-	T = wxTextCtrl:getLineText(I,0),
-	derive(T,Calc);
 	
 keypress(Id,#state{input=_I})  -> 
 	io:format("traiter Id ~p~n",[Id]).
@@ -236,9 +234,6 @@ addinput(I,S) ->
 
 evaluate(T,Calc) ->
 	calc_server:evaluate(T,Calc).
-
-derive(T,Calc) ->
-	calc_server:derive(T,Calc).
 
 affiche(S,T,{error,R}) ->
 	Mess = T ++ " --> Warning \n    " ++ R ++ "\n",

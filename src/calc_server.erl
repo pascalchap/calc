@@ -8,7 +8,7 @@
 %% callback export
 -export([init/1,handle_call/3,handle_cast/2,handle_info/2,terminate/2,code_change/3]).
 %% Interface export
--export([start_link/0,display/3,evaluate/2,derive/2,select_var/2]).
+-export([start_link/0,display/3,evaluate/2,select_var/2]).
 -export([start_app/0]).
 
 start_app() ->
@@ -24,9 +24,6 @@ select_var(Aff,L) ->
 evaluate(T,Calc) ->
 	gen_server:cast(Calc,{parse_evaluate,T}).
 	
-derive(T,Calc) ->
-	gen_server:cast(Calc,{derive,T}).
-
 %% callback functions	
 init([]) -> 
 	G = calcgui:start_link(?SERVER),
@@ -42,9 +39,6 @@ handle_call(Request, From, State) ->
 	Reply = ok, 
     {reply, Reply, State}.
 
-handle_cast({derive,T}, State) -> 
-	spawn(calc,parse_derive,[T,?SERVER]),
-    {noreply, State};
 handle_cast({parse_evaluate,T}, State) -> 
 	spawn(calc,parse_evaluate,[T,?SERVER]),
 	{noreply, State};
