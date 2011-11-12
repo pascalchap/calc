@@ -269,14 +269,12 @@ frac(N) -> N-int(N).
 
 evalfunc({Par,Desc,_Text},A) -> evaluate(replace(Desc,Par,A)).
 
-replace(Desc,[],[]) -> Desc;
-replace(Desc,[{var,N}|T],[A|B]) -> replace(replace1(Desc,N,A),T,B).
-
-replace1({var,N},N,A) -> A;
-replace1({minus,B},N,A) -> {minus,replace1(B,N,A)};
-replace1({op,Op,B1,B2},N,A) -> {op,Op,replace1(B1,N,A),replace1(B2,N,A)};
-replace1({Tf,F,P},N,A) -> {Tf,F,lists:map(fun(X) -> replace1(X,N,A) end,P )};
-replace1(B,_N,_A) -> B.
+replace({var,N},[{var,N}|_Rn],[O|_Ro]) -> O;
+replace({var,_}=N,[_N|Rn],[_O|Ro]) -> replace(N,Rn,Ro);
+replace({minus,B},N,O) -> {minus,replace(B,N,O)};
+replace({op,Op,B1,B2},N,O) -> {op,Op,replace(B1,N,O),replace(B2,N,O)};
+replace({Tf,F,P},N,O) -> {Tf,F,lists:map(fun(X) -> replace(X,N,O) end,P )};
+replace(B,_N,_O) -> B.
 
 	
 chekleft(A) -> 
@@ -317,10 +315,7 @@ derive({op,"^",A,B},V) -> {op,"*",
 											{op,"+",{op,"*",derive(B,V),{func,{"log",math},[A]}},
 													{op,"/",{op,"*",B,derive(A,V)},A}},
 											{op,"^",A,B}};
-derive({userfunc,N,A},V) -> 
-	{Sa,D,_} = getuserfunc(N),
-	Desc = replace(D,Sa,A),
-	derive(Desc,V);
+derive({userfunc,N,A},V) -> {Sa,D,_} = getuserfunc(N), derive(replace(D,Sa,A),V);
 derive({func,{N,_},[{var,V}]},V) -> getderive(N,{var,V});
 derive({func,{N,_},[A]},V) -> {op,"*",derive(A,V),getderive(N,A)}.
 
@@ -337,6 +332,7 @@ getderive("sqrt",A) -> {op,"*",{num,0.5},{op,"^",A,{num,-0.5}}}.
 
 simplify({func,{"drv",_},[F,{var,X}]}) -> simplify(derive(F,X));
 simplify({func,N,[A]}) -> {func,N,[simplify(A)]};
+simplify({userfunc,N,A}) -> {Sa,D,_} = getuserfunc(N), simplify(replace(D,Sa,A));
 simplify({minus,A}) -> reduce({minus,simplify(A)});
 simplify({op,Op,A,B}) -> reduce({op,Op,simplify(A),simplify(B)});
 simplify({assign,A,B}) -> {assign,A,reduce(simplify(B))};
