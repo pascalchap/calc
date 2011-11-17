@@ -64,14 +64,16 @@ handle_event(#wx{event=#wxCommand{type=command_menu_selected},id=?QUIT},S = #sta
     catch wxWindow:'Destroy'(F),
     {stop, shutdown, S};
 	
+handle_event(#wx{event=#wxKey{type=key_down,keyCode=K}},S) ->
+    io:format("key ~c pressed~n",[K]),
+	keyboard(K,S),
+    {noreply,S};
+
 handle_event(E,S = #state{frame=F}) ->
 	M = io_lib:format("Received Event ~p from Id ~p",[E#wx.event,E#wx.id]),
 	wxFrame:setStatusText(F,M,[]),
     {noreply,S}.
 
-handle_call({selectVar,L}, _From, State=#state{frame=F}) ->
-	Reply = dialog_choosevar(L,F),
-    {reply, Reply, State};
 handle_call(What, _From, State) ->
     {stop, {call, What}, State}.
 
@@ -150,9 +152,10 @@ create_window() ->
 
 
     wxWindow:connect(Board, command_button_clicked),
-    wxWindow:show(Frame),
+	wxWindow:show(Frame),
     wxMenuItem:check(LItem),
     wxMenuItem:check(EItem),
+	wxWindow:setFocus(Input),
     {Frame, Board,Screen,Input}.
 	
 buttonlist() ->
@@ -220,17 +223,24 @@ keypress(?PI,#state{input = I}) ->
 keypress(?DERIV,#state{input=I}) -> 
 	addinput(I,"drv(");	
 keypress(?CLEAR,#state{input=I}) -> 
-	wxTextCtrl:clear(I);
+	wxTextCtrl:clear(I),
+	wxWindow:setFocus(I);
 
 keypress(?EGAL,#state{input=I,calc=Calc}) -> 
 	T = wxTextCtrl:getLineText(I,0),
+	wxWindow:setFocus(I),
 	evaluate(T,Calc);
 	
-keypress(Id,#state{input=_I})  -> 
-	io:format("traiter Id ~p~n",[Id]).
+keypress(Id,#state{input=I})  -> 
+	io:format("traiter Id ~p~n",[Id]),
+	wxWindow:setFocus(I).
+
+keyboard(K,#state{input=I}) ->
+	addinput(I,[K]).
 	
 addinput(I,S) ->
-	wxTextCtrl:writeText(I,S).
+	wxTextCtrl:writeText(I,S),
+	wxWindow:setFocus(I).
 
 evaluate(T,Calc) ->
 	calc_server:evaluate(T,Calc).
@@ -244,20 +254,3 @@ affiche(S,T,R) when is_list(R)->
 affiche(S,T,R) ->
 	Mess = io_lib:format(T ++ " = ~n    ~p~n",[R]),
 	wxTextCtrl:appendText(S,Mess).
-
-dialog_choosevar(L,F) ->
-    Str = "select variable",
-    MD = wxFrame:new(F, 1000, Str, [{size,{250,150}},
-							{style,?wxFULL_REPAINT_ON_RESIZE bor ?wxDEFAULT_FRAME_STYLE}]),
-%%    Choice = wxChoice:new(MD, 4, [{choices, L}]),
-%%    wxChoice:setToolTip(Choice, "select one variable for derive operation"),
-%%    wxChoice:connect(Choice,command_choice_selected),
-
-    Choice = wxListBox:new(MD, 2, [{size, {-1,100}},
-					{choices, L},
-					{style, ?wxLB_SINGLE}]),
-    wxListBox:setToolTip(Choice, "select one variable for derive operation"),
-    wxFrame:connect(MD, close_window),	
-    wxFrame:makeModal(MD),
-	wxFrame:show(MD),
-	["x"].

@@ -2,7 +2,7 @@
 
 %% -compile(export_all).
 
--export([parse_evaluate/2, parse_derive/2, parse/1,evaluate/1,fact/1,int/1,frac/1,drv/2,
+-export([parse_evaluate/2, parse/1,evaluate/1,fact/1,int/1,frac/1,drv/2,
 			derive/2,simplify/1,print/1,getvarfunc/1,testparse/0,test/1]).
 
 -include("../include/calc.hrl").
@@ -21,19 +21,6 @@ parse_evaluate(T,Aff) ->
 		R -> R
 	end,
 	calc_server:display(Aff,T,Rep).
-
-%% Need to modifiy this in order to allow derive within an evaluation
-parse_derive(T,Aff) ->
-    R = (catch getvarfunc(T)),
-	Rep = case R of
-		{'EXIT',{Reason,_Info}}	-> {error,atom_to_list(Reason)};
-		{error,Reason}				-> {error,Reason};
-		{A=[_],D}						-> doderive(D,A);
-		{A,D}							-> V = calc_server:select_var(Aff,A),doderive(D,V) ;
-		R								-> R
-	end,
-	calc_server:display(Aff,T,Rep).
-
 	
 getvarfunc(Exp) ->
 	R = (catch parse(Exp)),
@@ -433,13 +420,6 @@ print(A,_P) -> " " ++ io_lib:format("#~p#",[A]) ++ " ".
 par(true,o) -> "(";
 par(true,f) -> ")";
 par(_,_) -> "".
-
-doderive(_F,[]) ->
-	{error,"the expression has no variable\n"};
-doderive(F,[V]) ->
-	calc:print(calc:simplify(calc:derive(F,V)));
-doderive(_F,L) ->
-	{error,getvariable,L}.
 
 testparse() ->
 	F = fun(X) -> 
