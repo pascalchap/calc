@@ -5,7 +5,7 @@
 -export([init/1, handle_info/2, handle_call/3, handle_event/2, 
 	 terminate/2, code_change/3]).
 
--export([start_link/1,selectvar/2]).
+-export([start_link/1]).
 
 -behaviour(wx_object).
 
@@ -17,14 +17,12 @@ start_link(Server) ->
     wx:new(),
     {wx_ref,_Id,_WxType,Pid} = wx_object:start_link(?MODULE, [Server], []),
 	Pid.
-
-selectvar(L,G) ->
-	gen_server:call(G,{selectVar,L}).
 	
 %%%%%%%%%%%%%%%%%%%%% Server callbacks %%%%%%%%%%%%%
 
 init([Server]) ->
     {Frame, Board,Screen,Input} = wx:batch(fun() -> create_window() end),
+	io:format("input = ~p~n",[Input]),
     {Frame, #state{board=Board,frame=Frame,screen=Screen,input=Input,calc=Server}}.
 
 handle_info(quit, S=#state{frame=F}) ->
@@ -64,9 +62,13 @@ handle_event(#wx{event=#wxCommand{type=command_menu_selected},id=?QUIT},S = #sta
     catch wxWindow:'Destroy'(F),
     {stop, shutdown, S};
 	
-handle_event(#wx{event=#wxKey{type=key_down,keyCode=K}},S) ->
-    io:format("key ~c pressed~n",[K]),
-	keyboard(K,S),
+handle_event(#wx{event=#wxKey{type=char,keyCode=13}},S) ->
+%% theb user pressed enter
+	keyenter(S),
+    {noreply,S};
+
+handle_event(#wx{event=#wxKey{type=char}},S) ->
+%% for any other key, use the standard behaviour (option skip)
     {noreply,S};
 
 handle_event(E,S = #state{frame=F}) ->
@@ -134,7 +136,7 @@ create_window() ->
 	
 	Screen = wxTextCtrl:new(Board, 110, [{size, {300,200}},
 			{style, ?wxDEFAULT bor ?wxTE_MULTILINE bor ?wxHSCROLL bor ? wxVSCROLL bor ?wxTE_READONLY}]),
-	Input = wxTextCtrl:new(Board,111,[{style, ?wxDEFAULT}]),
+	Input = wxTextCtrl:new(Board,111,[{style, ?wxDEFAULT bor ?wxTE_PROCESS_ENTER}]),
 
 	
  	wxSizer:addSpacer(MainSz,2),
@@ -155,6 +157,7 @@ create_window() ->
 	wxWindow:show(Frame),
     wxMenuItem:check(LItem),
     wxMenuItem:check(EItem),
+	wxTextCtrl:connect(Input,char,[{skip,true}]),
 	wxWindow:setFocus(Input),
     {Frame, Board,Screen,Input}.
 	
@@ -235,8 +238,10 @@ keypress(Id,#state{input=I})  ->
 	io:format("traiter Id ~p~n",[Id]),
 	wxWindow:setFocus(I).
 
-keyboard(K,#state{input=I}) ->
-	addinput(I,[K]).
+keyenter(#state{input=I,calc=Calc}) -> %% Enter
+	T = wxTextCtrl:getLineText(I,0),
+	wxWindow:setFocus(I),
+	evaluate(T,Calc).
 	
 addinput(I,S) ->
 	wxTextCtrl:writeText(I,S),

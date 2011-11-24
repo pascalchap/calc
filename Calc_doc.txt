@@ -14,8 +14,8 @@ Todo -> test de conflit de merge: resolution manuelle dans Kdiff3.
 
 organiser le stockage en utilisant mnesia
 utiliser un server pour stocker les informations d'affichage et permettre la gestion base 2,8,10,16
-assurer le focus clavier sur la zone de saisie par defaut
+assurer le focus clavier sur la zone de saisie par defaut --> done
 interpret userfunction in order to solve embedded userfunction before storing --> done
 correct the behavior of swapping variable: f(x,y)=x^2+y then g(x,y)=f(y,x) --> = "x^2+x" --> done
-associer la fonction = à la touche enter
-modifier la touche f' pour qu'elle insert drv(|,)
+associer la fonction = à la touche enter --> done
+modifier la touche f' pour qu'elle insert drv( --> done 
