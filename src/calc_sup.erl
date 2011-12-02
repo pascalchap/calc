@@ -8,8 +8,8 @@
 start_link() -> 
     supervisor:start_link({local, ?SERVER}, ?MODULE, []). 
 init([]) -> 
-	%% process_flag(trap_exit, true), 
-	io:format("enter init~n"),
+    %% process_flag(trap_exit, true), 
+    io:format("enter init~n"),
     Calc = {calc,{calc_server,start_link, []}, 
-                  transient,1000,worker,[calcgui,calc,calc_server]}, 
+	    transient,1000,worker,[calcgui,calc,calc_server]}, 
     {ok,{{one_for_one,10,1},[Calc]}}.

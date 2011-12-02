@@ -12,54 +12,54 @@
 -export([start_app/0]).
 
 start_app() ->
-	application:start(calc).
+    application:start(calc).
 
 start_link() -> 
-	gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
+    gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
 
 display(Aff,T,Rep) ->
-	gen_server:cast(Aff,{display,T,Rep}).
+    gen_server:cast(Aff,{display,T,Rep}).
 select_var(Aff,L) ->
-	gen_server:call(Aff,{select_var,L}).
+    gen_server:call(Aff,{select_var,L}).
 evaluate(T,Calc) ->
-	gen_server:cast(Calc,{parse_evaluate,T}).
-	
+    gen_server:cast(Calc,{parse_evaluate,T}).
+
 %% callback functions	
 init([]) -> 
-	G = calcgui:start_link(?SERVER),
-	S = calc_store:start_link(),
-	io:format("Calcgui PId is ~p, Store PID is ~p~n",[G,S]),
-	{ok,#state{gui=G,store=S}}.
+    G = calcgui:start_link(?SERVER),
+    S = calc_store:start_link(),
+    io:format("Calcgui PId is ~p, Store PID is ~p~n",[G,S]),
+    {ok,#state{gui=G,store=S}}.
 
 handle_call({select_var,L}, _From, State = #state{gui = G}) -> 
-	Reply = calcgui:selectvar(L,G),
-	{reply, Reply, State};
+    Reply = calcgui:selectvar(L,G),
+    {reply, Reply, State};
 handle_call(Request, From, State) -> 
-	io:format("calc_server received call: ~p from ~p~n",[Request,From]),
-	Reply = ok, 
+    io:format("calc_server received call: ~p from ~p~n",[Request,From]),
+    Reply = ok, 
     {reply, Reply, State}.
 
 handle_cast({parse_evaluate,T}, State) -> 
-	spawn(calc,parse_evaluate,[T,?SERVER]),
-	{noreply, State};
+    spawn(calc,parse_evaluate,[T,?SERVER]),
+    {noreply, State};
 handle_cast(Mess = {display,_Input,_Rep}, State = #state{gui = G}) -> 
-	G ! Mess,
-	{noreply, State};
+    G ! Mess,
+    {noreply, State};
 handle_cast(Msg, State) -> 
-	io:format("calc_server received cast: ~p~n",[Msg]),
-	{noreply, State}.
+    io:format("calc_server received cast: ~p~n",[Msg]),
+    {noreply, State}.
 
 handle_info({'EXIT',_P,shutdown},State) -> 
-	{stop,State};
+    {stop,State};
 handle_info(Msg,State) -> 
-	io:format("calc_server received info: ~p~n",[Msg]),
-	{noreply,State}.
+    io:format("calc_server received info: ~p~n",[Msg]),
+    {noreply,State}.
 
 terminate(Reason, _State) -> 
-	io:format("terminate calc server with reason: ~p~n",[Reason]),
-	ok.
+    io:format("terminate calc server with reason: ~p~n",[Reason]),
+    ok.
 
 code_change(_OldVsn, State, _Extra) -> 
-	{ok, State}.
+    {ok, State}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
