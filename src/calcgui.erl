@@ -11,7 +11,7 @@
 
 -include("../include/calc.hrl").
 
--record(state,{board,frame,screen,input,calc}).
+-record(state,{board,frame,screen,input,calc,button=buttonlist()}).
 
 start_link(Server) ->
     wx:new(),
@@ -148,7 +148,7 @@ create_window() ->
     wxSizer:addSpacer(MainSz,3),
     wxSizer:add(KeySz, KeyGrSz, [{flag, ?wxALL bor ?wxEXPAND}]), 
     [wxSizer:add(KeyGrSz, wxButton:new(Board,Id,[{label,Txt},{size,{40,20}}]), [{flag, ?wxALL}]) || 
-	{Id,Txt} <- buttonlist()], 
+	{Id,Txt,_Print} <- buttonlist()], 
     wxSizer:add(MainSz, KeySz, [{proportion, 0}, {border, 4}, {flag, ?wxALL}]), 
     wxSizer:addSpacer(MainSz,2),
 
@@ -167,64 +167,7 @@ buttonlist() ->
      ?B_UN,?B_DEUX,?B_TROIS,?B_MOINS,?B_PARO,?B_PARF,?B_LOG10,?B_COS,?B_COSH,?B_INT,
      ?B_POINT,?B_ZERO,?B_EGAL,?B_PLUS,?B_FACT,?B_ARRG,?B_COMB,?B_TAN,?B_TANH,?B_RES].
 
-keypress(Id,#state{input = I}) when Id >= ?ZERO, Id =< ?NEUF -> 
-    addinput(I,integer_to_list(Id - ?ZERO));
-keypress(?POINT,#state{input = I}) ->
-    addinput(I,".");
 
-keypress(?PLUS,#state{input = I}) ->
-    addinput(I," + ");
-keypress(?MOINS,#state{input = I}) ->
-    addinput(I," - ");
-keypress(?MULT,#state{input = I}) ->
-    addinput(I," * ");
-keypress(?DIV,#state{input = I}) ->
-    addinput(I," / ");
-keypress(?PARO,#state{input = I}) ->
-    addinput(I,"(");
-keypress(?PARF,#state{input = I}) ->
-    addinput(I,")");
-keypress(?RACINE,#state{input = I}) ->
-    addinput(I,"sqrt(");
-keypress(?EXP,#state{input = I}) ->
-    addinput(I,"^");
-keypress(?LOG,#state{input = I}) ->
-    addinput(I,"log(");
-keypress(?SIN,#state{input = I}) ->
-    addinput(I,"sin(");
-keypress(?SINH,#state{input = I}) ->
-    addinput(I,"sinh(");
-keypress(?LOG10,#state{input = I}) ->
-    addinput(I,"log10(");
-keypress(?COS,#state{input = I}) ->
-    addinput(I,"cos(");
-keypress(?COSH,#state{input = I}) ->
-    addinput(I,"cosh(");
-keypress(?TAN,#state{input = I}) ->
-    addinput(I,"tan(");
-keypress(?TANH,#state{input = I}) ->
-    addinput(I,"tanh(");
-keypress(?ABS,#state{input = I}) ->
-    addinput(I,"abs(");
-keypress(?FRAC,#state{input = I}) ->
-    addinput(I,"frac(");
-keypress(?INT,#state{input = I}) ->
-    addinput(I,"int(");
-keypress(?RES,_) -> ok;
-keypress(?FACT,#state{input = I}) ->
-    addinput(I,"fact(");
-keypress(?DIVE,#state{input = I}) ->
-    addinput(I," div ");
-keypress(?REM,#state{input = I}) ->
-    addinput(I," rem ");
-keypress(?COMB,#state{input = I}) ->
-    addinput(I," comb ");
-keypress(?ARRG,#state{input = I}) ->
-    addinput(I," arrg ");
-keypress(?PI,#state{input = I}) ->
-    addinput(I," pi# ");
-keypress(?DERIV,#state{input=I}) -> 
-    addinput(I,"drv(");	
 keypress(?CLEAR,#state{input=I}) -> 
     wxTextCtrl:clear(I),
     wxWindow:setFocus(I);
@@ -234,8 +177,9 @@ keypress(?EGAL,#state{input=I,calc=Calc}) ->
     wxWindow:setFocus(I),
     evaluate(T,Calc);
 
-keypress(Id,#state{input=I})  -> 
-    io:format("traiter Id ~p~n",[Id]),
+keypress(Id,#state{input=I,button=B})  -> 
+    {Id,_Text,Print} = lists:keyfind(Id,1,B),
+    addinput(I,Print),
     wxWindow:setFocus(I).
 
 keyenter(#state{input=I,calc=Calc}) -> %% Enter
