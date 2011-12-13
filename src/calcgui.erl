@@ -93,7 +93,7 @@ terminate(Reason, _State) ->
 %%%%%%%%%%%%%%%%%%%%% local helpers %%%%%%%%%%%%%
 
 create_window() ->
-    Frame = wxFrame:new(wx:null(), -1, "La Calculette à Chapi", [{size,{444,485}},
+    Frame = wxFrame:new(wx:null(), -1, "La Calculette à Chapi", [{size,{444,510}},
 								 {style,?wxFULL_REPAINT_ON_RESIZE bor ?wxDEFAULT_FRAME_STYLE}]),
 
     wxFrame:createStatusBar(Frame,[]),
@@ -165,14 +165,15 @@ buttonlist() ->
     [?B_SEPT,?B_HUIT,?B_NEUF,?B_DIV,?B_CLEAR,?B_RACINE,?B_PI,?B_EXP,?B_LOG,?B_ABS,
      ?B_QUATRE,?B_CINQ,?B_SIX,?B_MULT,?B_DIVE,?B_REM,?B_DERIV,?B_SIN,?B_SINH,?B_FRAC,
      ?B_UN,?B_DEUX,?B_TROIS,?B_MOINS,?B_PARO,?B_PARF,?B_LOG10,?B_COS,?B_COSH,?B_INT,
-     ?B_POINT,?B_ZERO,?B_EGAL,?B_PLUS,?B_FACT,?B_ARRG,?B_COMB,?B_TAN,?B_TANH,?B_RES].
+     ?B_POINT,?B_ZERO,?B_EGAL,?B_PLUS,?B_FACT,?B_ARRG,?B_COMB,?B_TAN,?B_TANH,?B_RES,
+	 ?B_ASIN,?B_ASINH,?B_ACOS,?B_ACOSH,?B_ATAN,?B_ATANH,?B_RES,?B_RES,?B_RES,?B_ENTER].
 
 
 keypress(?CLEAR,#state{input=I}) -> 
     wxTextCtrl:clear(I),
     wxWindow:setFocus(I);
 
-keypress(?EGAL,#state{input=I,calc=Calc}) -> 
+keypress(?ENTER,#state{input=I,calc=Calc}) -> 
     T = wxTextCtrl:getLineText(I,0),
     wxWindow:setFocus(I),
     evaluate(T,Calc);

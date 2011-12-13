@@ -264,12 +264,17 @@ replace({Tf,F,P},N,O) -> {Tf,F,lists:map(fun(X) -> replace(X,N,O) end,P )};
 replace(B,_N,_O) -> B.
 
 
+%% A must be a list of {var,N} not empty
 chekleft(A) -> 
     [_|_] = lists:foldl(fun (X,Acc) -> {var,N} = X, [N|Acc] end, [],A).
 
+%% The function definition must only include variables defined in Listvar 
 checkuserfunc(Def,Listvar) ->
-    Temp = lists:sort(Listvar),
-    Temp = getvarlist(Def),
+    All = lists:sort(Listvar),
+    Part = getvarlist(Def),
+%% Check inclusion, lists:substract should be OK because lists must be very small.
+	Rest = All -- Part,
+	Part = All -- Rest,
     ok.
 
 getvarlist(S) -> lists:usort(getvarlist(S,[])).
@@ -315,6 +320,12 @@ getderive("tanh",A) -> {op,"/",{num,1},{op,"^",{func,{"cosh",math},[A]},{num,2}}
 getderive("exp",A) -> {func,{"exp",math},[A]};
 getderive("log",A) -> {op,"/",{num,1},A};
 getderive("log10",A) -> {op,"/",{num,1},{op,"*",{num,math:log(10)},[A]}};
+getderive("acos",A) -> {minus,{op,"^",{op,"-",{num,1},{op,"^",A,{num,2}}},{num,-0.5}}};
+getderive("asin",A) -> {op,"^",{op,"-",{num,1},{op,"^",A,{num,2}}},{num,-0.5}};
+getderive("atan",A) -> {op,"/",{num,1},{op,"+",{num,1},{op,"^",A,{num,2}}}};
+getderive("acosh",A) -> {op,"^",{op,"-",{op,"^",A,{num,2}},{num,1}},{num,-0.5}};
+getderive("asinh",A) -> {op,"^",{op,"+",{num,1},{op,"^",A,{num,2}}},{num,-0.5}};
+getderive("atanh",A) -> {op,"/",{num,1},{op,"-",{num,1},{op,"^",A,{num,2}}}};
 getderive("sqrt",A) -> {op,"*",{num,0.5},{op,"^",A,{num,-0.5}}}.
 
 simplify({func,{"drv",_},[F,{var,X}]}) -> simplify(derive(F,X));
@@ -325,57 +336,52 @@ simplify({op,Op,A,B}) -> reduce({op,Op,simplify(A),simplify(B)});
 simplify({assign,A,B}) -> {assign,A,reduce(simplify(B))};
 simplify(A) -> reduce(A).
 
+%% reduce(Exp) return equivalent expression with some simplification that should lighten the printing
+%% -.- = + and similar rules
 reduce({minus,{minus,A}}) -> reduce(A);
 reduce({minus,{num,N}}) -> {num,-N};
 reduce({minus,A}) -> {minus,reduce(A)};
 reduce({op,"-",A,{minus,B}}) -> reduce({op,"+",A,B});
-reduce({op,"*",{minus,A},{minus,B}}) -> reduce({op,"*",A,B});
-reduce({op,"*",A,{minus,B}}) -> {minus,reduce({op,"*",A,B})};
-reduce({op,"*",{minus,A},B}) -> {minus,reduce({op,"*",A,B})};
-reduce({op,"/",{minus,A},{minus,B}}) -> reduce({op,"/",A,B});
-reduce({op,"/",A,{minus,B}}) -> {minus,reduce({op,"/",A,B})};
-reduce({op,"/",{minus,A},B}) -> {minus,reduce({op,"/",A,B})};
-reduce({op,"/",A,{op,"/",B,C}}) -> reduce({op,"*",A,{op,"/",C,B}});
+reduce({op,"+",A,{minus,B}}) -> reduce({op,"-",A,B});
+reduce({op,Op,{minus,A},{minus,B}}) when Op == "*"; Op == "/"  -> reduce({op,Op,A,B});
+reduce({op,Op,A,{minus,B}}) when Op == "*"; Op == "/"  -> {minus,reduce({op,Op,A,B})};
+reduce({op,Op,{minus,A},B}) when Op == "*"; Op == "/"  -> {minus,reduce({op,Op,A,B})};
+%% try to gather the numerical value to the left of op when it is possible
+reduce({op,_Op,{num,_N1},{num,_N2}}=A) -> {num,evaluate(A)};
+reduce({op,Op,A,{num,N}}) when Op == "+" ; Op == "*" -> reduce({op,Op,{num,N},A});
+reduce({op,"-",A,{num,N}}) -> reduce({op,"+",{num,-N},A});
+reduce({op,"/",A,{num,N}}) -> reduce({op,"*",{num,1/N},A});
+%% simplify multiple qotient, trying to wite a ratio of products
+reduce({op,"/",A,{op,"/",B,C}}) -> reduce({op,"/",{op,"*",A,C},B});
 reduce({op,"/",{op,"/",A,B},C}) -> reduce({op,"/",A,{op,"*",C,B}});
+%% trivial numerical expression (not really accurate regarding fundamental maths)
 reduce({op,"*",{num,N},_A}) when N == 0 -> {num,0};
 reduce({op,"+",{num,N},A}) when N == 0 -> A;
 reduce({op,"-",{num,N},A}) when N == 0 -> {minus,A};
 reduce({op,"/",{num,N},_A}) when N == 0 -> {num,0};
 reduce({op,"^",{num,N},_A}) when N == 0 -> {num,0};
-reduce({op,"*",_A,{num,N}}) when N == 0 -> {num,0};
-reduce({op,"+",A,{num,N}}) when N == 0 -> A;
-reduce({op,"-",A,{num,N}}) when N == 0 -> A;
-reduce({op,"/",_A,{num,N}}) when N == 0 -> throw({error,divide_by_zero});
 reduce({op,"^",_A,{num,N}}) when N == 0 -> {num,1};
 reduce({op,"*",{num,N},A}) when N == 1 -> A;
 reduce({op,"^",{num,N},_A}) when N == 1 -> {num,1};
-reduce({op,"*",A,{num,N}}) when N == 1 -> A;
-reduce({op,"/",A,{num,N}}) when N == 1 -> A;
 reduce({op,"^",A,{num,N}}) when N == 1 -> A;
+%% operation with 2 numbers
 reduce({op,"*",{num,N1},{num,N2}}) -> {num,N1*N2};
 reduce({op,"/",{num,N1},{num,N2}}) when is_float(N1); is_float(N2)-> {num,N1/N2};
 reduce({op,"/",{num,N1},{num,N2}}) when (N1 rem N2) == 0 -> {num,N1 div N2};
 reduce({op,"+",{num,N1},{num,N2}}) -> {num,N1+N2};
 reduce({op,"-",{num,N1},{num,N2}}) -> {num,N1-N2};
 reduce({op,"^",{num,N1},{num,N2}}) -> {num,pow(N1,N2)};
+%% recognize some other patterns
 reduce({op,"*",A,A}) -> {op,"^",reduce(A),{num,2}};
 reduce({op,"/",A,A}) -> {num,1};
 reduce({op,"*",A,{op,"^",A,B}}) -> {op,"^",reduce(A),reduce({op,"+",{num,1},B})};
 reduce({op,"*",{op,"^",A,B},A}) -> {op,"^",reduce(A),reduce({op,"+",{num,1},B})};
 reduce({op,"/",A,{op,"^",A,B}}) -> {op,"^",reduce(A),reduce({op,"-",{num,1},B})};
 reduce({op,"/",{op,"^",A,B},A}) -> {op,"^",reduce(A),reduce({op,"-",B,{num,1}})};
-reduce({op,"*",{num,N1},{op,Op,{num,N2},A}}) when Op == "+"; Op == "-"; Op == "*"; Op == "/" ->
+reduce({op,"*",{num,N1},{op,Op,{num,N2},A}}) when Op == "*"; Op == "/" ->
     reduce({op,Op,{num,N1*N2},A});
-reduce({op,"/",{num,N1},{op,Op,{num,N2},A}}) when Op == "+"; Op == "-"; Op == "*"; Op == "/" ->
+reduce({op,"/",{op,Op,{num,N2},A},{num,N1}}) when Op == "*"; Op == "/" ->
     reduce({op,Op,{num,N1/N2},A});
-reduce({op,"^",{num,N1},{op,Op,{num,N2},A}}) when Op == "+"; Op == "-"; Op == "*"; Op == "/" ->
-    reduce({op,Op,{num,pow(N1,N2)},A});
-reduce({op,"*",{op,Op,{num,N2},A},{num,N1}}) when Op == "+"; Op == "-"; Op == "*"; Op == "/" ->
-    reduce({op,Op,{num,N1*N2},A});
-reduce({op,"/",{op,Op,{num,N2},A},{num,N1}}) when Op == "+"; Op == "-"; Op == "*"; Op == "/" ->
-    reduce({op,Op,{num,N1/N2},A});
-reduce({op,"^",{num,N1},{op,Op,{num,N2},A},{num,N1}}) when Op == "+"; Op == "-"; Op == "*"; Op == "/" ->
-    reduce({op,Op,{num,pow(N1,N2)},A});
 reduce({op,Op,{op,Op,A,B},{op,Op,C,D}}) when Op == "+"; Op == "*" ->
     reduce({op,Op,A,{op,Op,B,{op,Op,C,D}}});
 reduce({op,Op,A,{op,Op,{num,N},B}}) when Op == "+"; Op == "*" -> reduce({op,Op,{num,N},{op,Op,A,B}});
@@ -383,7 +389,7 @@ reduce({op,Op,A,B}) -> {op,Op,reduce(A),reduce(B)};
 reduce(A) -> A.
 
 pow(_,0) -> 1;
-pow(X,N) when is_integer(N), N>0 ->
+pow(X,N) when is_integer(N), N>0, is_integer(X) ->
     pow(X,N,1);
 pow(X,N) -> math:pow(X,N).
 
@@ -404,7 +410,7 @@ print({func,{N,_},[A]},_P) -> N ++ "(" ++ print(A, 5) ++ ")";
 print({minus,A},P) -> par(4>P,o) ++ "-" ++ print(A,4) ++ par(4>P,f);
 print({var,A},P) -> par(2>P,o) ++ A ++ par(2>P,f);
 print({num,A},_P) when is_integer(A) -> integer_to_list(A);
-print({num,A},_P) -> float_to_list(A);
+print({num,A},_P) -> [H] = io_lib:format("~w",[A]), H; %% float_to_list(A);
 print({const,A},_P) -> A;
 print({op,Op,A,B},2) when Op == "^" -> par(true,o) ++ print(A,2) ++ Op ++ print(B,2) ++ par(true,f);
 print({op,Op,A,B},P) when Op == "^" -> par(2>P,o) ++ print(A,2) ++ Op ++ print(B,2) ++ par(2>P,f);

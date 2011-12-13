@@ -55,7 +55,14 @@
 -define(ABS,136).
 -define(FRAC,137).
 -define(INT,138).
--define(RES,139).
+-define(ASIN,139).
+-define(ASINH,140).
+-define(ACOS,141).
+-define(ACOSH,142).
+-define(ATAN,143).
+-define(ATANH,144).
+-define(ENTER,145).
+-define(RES,146).
 
 
 -define(B_ZERO,{?ZERO,"0","0"}).
@@ -70,7 +77,7 @@
 -define(B_NEUF,{?NEUF,"9","9"}).
 -define(B_POINT,{?POINT,".","."}).
 -define(B_CLEAR,{?CLEAR,"C",null}).
--define(B_EGAL,{?EGAL,"=",null}).
+-define(B_EGAL,{?EGAL,"="," = "}).
 -define(B_RACINE,{?RACINE,"sqrt","sqrt("}).
 -define(B_SIN,{?SIN,"sin","sin("}).
 -define(B_COS,{?COS,"cos","cos("}).
@@ -97,6 +104,13 @@
 -define(B_ABS,{?ABS,"abs","abs("}).
 -define(B_FRAC,{?FRAC,"frac","frac("}).
 -define(B_INT,{?INT,"int","int("}).
+-define(B_ACOS,{?ACOS,"acos","acos("}).
+-define(B_ACOSH,{?ACOSH,"acosh","acosh("}).
+-define(B_ASIN,{?ASIN,"asin","asin("}).
+-define(B_ASINH,{?ASINH,"asinh","asinh("}).
+-define(B_ATAN,{?ATAN,"atan","atan("}).
+-define(B_ATANH,{?ATANH,"atanh","atanh("}).
+-define(B_ENTER,{?ENTER,"enter",null}).
 -define(B_RES,{?RES," ",null}).
 
 %% KEYWORDS

@@ -19,4 +19,6 @@ interpret userfunction in order to solve embedded userfunction before storing --
 correct the behavior of swapping variable: f(x,y)=x^2+y then g(x,y)=f(y,x) --> = "x^2+x" --> done
 associer la fonction = à la touche enter --> done
 modifier la touche f' pour qu'elle insert drv( --> done 
-Refactoring de calcgui pour rendre plus generique la gestion des clicks boutons. Nécessitera la création d'un bouton Enter.
+Refactoring de calcgui pour rendre plus generique la gestion des clicks boutons. Nécessitera la création d'un bouton Enter. --> done
+Correction de la phase de simplification. --> in progress
+Accepter une definition de fonction du type: f(x,y) = sin(x) --> done
