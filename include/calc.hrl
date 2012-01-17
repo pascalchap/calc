@@ -1,4 +1,4 @@
--include("C:\\Program Files\\erl5.8.4\\lib\\wx-0.98.10\\include\\wx.hrl").
+-include("C:\\Program Files\\erl5.9\\lib\\wx-0.99.1\\include\\wx.hrl").
 
 %% GUI Id and definitions
 -define(QUIT,1).
@@ -152,7 +152,7 @@
 
 %% Pattern definition
 -define(NOM,"[A-Za-z][A-Za-z0-9_]*").
--define(SIGN,"[\\(\\)\\+\\-\\*\\/\\^=]").
+-define(SIGN,"[\\(\\)\\+\\-\\*\\/\\^=,]").
 -define(NUM,"[0-9]+(\\.[0-9]+)?([eE][\\+-]?[0-9]+)?").
 -define(BASE,"[2-9]#[0-8]+|[12][0-9]#[0-9a-sA-S]+|3[0-6]#[0-9a-zA-Z]+").
 -define(MATCH,?NOM++"|"++?SIGN++"|"++?BASE++"|"++?NUM).

@@ -9,7 +9,7 @@
 -export([code_change/3,handle_call/3,handle_cast/2,handle_info/2,init/1,terminate/2]).
 
 %% api
--export([start_link/0,storevar/2,storefunc/4,getvalue/1,getfunc/1]).
+-export([start_link/0,storevar/2,storefunc/4,getvalue/1,getfunc/1,stop/0]).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -24,6 +24,9 @@ getvalue(Name) ->
 
 getfunc(Name) ->
     gen_server:call(?MODULE,{readfunc,Name}).
+
+stop() ->
+	gen_server:cast(?MODULE,stop).
 
 start_link() -> 
     gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
@@ -45,6 +48,8 @@ handle_call(Request, From, State) ->
     Reply = ok, 
     {reply, Reply, State}.
 
+handle_cast(stop,State) ->
+	{stop,State};
 handle_cast({storevar,Name,Value}, State = #state{var=D}) -> 
     NewD= dict:store(Name,Value,D),
     {noreply, State#state{var=NewD}};

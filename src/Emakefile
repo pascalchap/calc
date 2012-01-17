@@ -1,1 +1,2 @@
 {'*',[debug_info,{i,"../include"},{i,"../ebin"},{outdir,"../ebin"}]}.
+{"../test/*",[debug_info,{i,"../include"},{i,"../ebin"},{outdir,"../ebin"}]}.
