@@ -1,0 +1,2 @@
+ct:run_test([{suite,"../test/reduce_SUITE"},{config,"../test/reduce.cfg"},{logdir,"../results"},{cover,"../test/reduce.coverspec"}]).
+ct:run_test([{suite,"../test/reduce_SUITE"},{config,"../test/reduce.cfg"},{logdir,"../results"},{cover,"../test/reduce.coverspec"},{step,[]}]).
