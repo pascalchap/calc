@@ -126,8 +126,9 @@ split(T) ->
     [Conv(lists:sublist(T, X + 1, Y)) || {X, Y} <- L1].
 
 getsubstitute(X) ->
-    F = fun (K = {_, {N, _}}, _) when N == X -> K;
-	    (K = {_, N}, _) when N == X -> K;
+    F = fun (K = {func, {N, _}}, _) when N =:= X -> K;
+	    (K = {sep, N}, _) when N =:= X -> K;
+	    (K = {const, N}, _) when N =:= X -> K;
 	    (_, A) -> A
 	end,
     lists:foldl(F, {new, X}, ?KEYWORDS).
@@ -587,6 +588,8 @@ print(A) -> print(A, 10).
 
 print({func, {N, _}, [A]}, _P) ->
     N ++ "(" ++ print(A, 5) ++ ")";
+print({userfunc,N,Par}, _P) ->
+    N ++ "(" ++ printpar(Par) ++ ")";
 print({minus, A}, P) ->
     par(4 > P, o) ++ "-" ++ print(A, 4) ++ par(4 > P, f);
 print({var, A}, P) ->
@@ -624,6 +627,9 @@ print({op, Op, A, B}, P) ->
 print([L], _P) -> print(L);
 print([_ | _] = L, _P) -> L;
 print({error, _R} = Err, _P) -> Err.
+
+printpar([H]) -> print(H);
+printpar([H|Q]) -> print(H) ++ " , " ++ printpar(Q).
 
 %% print(A,_P) -> " " ++ io_lib:format("#~p#",[A]) ++ " ". %% never reached
 

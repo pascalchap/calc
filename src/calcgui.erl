@@ -2,10 +2,11 @@
 
 -vsn("v0.1 alpha --").
 
--export([init/1, handle_info/2, handle_call/3, handle_event/2, 
+-export([init/1, handle_info/2, handle_call/3, handle_cast/2, handle_event/2, 
 	 terminate/2, code_change/3]).
 
 -export([start_link/1]).
+
 
 -behaviour(wx_object).
 
@@ -79,6 +80,9 @@ handle_event(E,S = #state{frame=F}) ->
 handle_call(What, _From, State) ->
     {stop, {call, What}, State}.
 
+handle_cast(_What, State) ->
+    {noreply, State}.
+	
 code_change(_, _, State) ->
     {stop, not_yet_implemented, State}.
 

@@ -56,8 +56,9 @@ end_per_group(_GroupName, _Config) ->
 init_per_testcase(simplify, Config) ->
 %% check that cac_store is not started on this VM
 %% if calc_store is started, the if statement will crash and the test case skipped
-	Started = lists:member(calc_store,registered()),
-	if ( Started == false) ->
+	Started = whereis(calc_store),
+	io:format("################ Whereis(calc_store) = ~p~n",[Started]),
+	if ( Started == undefined) ->
 		calc_store:start_link()
 		%% When this test case will finish the link property will kill the calc_store process
 	end,

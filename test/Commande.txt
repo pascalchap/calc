@@ -1,2 +1,4 @@
-ct:run_test([{suite,"../test/reduce_SUITE"},{config,"../test/reduce.cfg"},{logdir,"../results"},{cover,"../test/reduce.coverspec"}]).
-ct:run_test([{suite,"../test/reduce_SUITE"},{config,"../test/reduce.cfg"},{logdir,"../results"},{cover,"../test/reduce.coverspec"},{step,[]}]).
+code:add_patha("D:/documents and Settings/pchapier/My Documents/git/calc/ebin").
+ct:run_test([{spec, "../test/reduce.spec"}]).
+ct:run_test([{spec, "../test/reduce.spec"},{step,[]}]).
+Update = fun () -> [l(list_to_atom(filename:basename(X,".beam"))) || X <- string:tokens(os:cmd("dir /B *.beam"), "\r\n")] end .

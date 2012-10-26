@@ -40,9 +40,6 @@ init([]) ->
 	      [G, S]),
     {ok, #state{gui = G, store = S}}.
 
-handle_call({select_var, L}, _From,
-	    State = #state{gui = G}) ->
-    Reply = calcgui:selectvar(L, G), {reply, Reply, State};
 handle_call(Request, From, State) ->
     io:format("calc_server received call: ~p from ~p~n",
 	      [Request, From]),
