@@ -1,0 +1,41 @@
+@author Pascal Chapier <pascalchap@gmail.com>
+@copyright 2013 Pascal Chapier
+@version 0.2.0
+@title Chap's Calculette.
+
+@doc Programme de calculette offrant en plus des opération standard, du calcul formel, la possibilité de stocker des valeurs ou des fonction dans des variables. Il reprend l'organisation standard OTP, a savoir: <br />
+<li>
+<em>calc.app</em>	-> liste des modules, applications, process enregistree...
+</li><li>
+<em>calc_app</em>	-> behavior modele
+</li><li>
+<em>calc_sup</em>	-> superviseur principal de l'application
+</li><li>
+<em>calc_gui</em>	-> behavior wx_windows charger de gerer l'affichage et l'interface utilisateur
+</li><li>
+<em>calc_server</em>	-> behavior gen_server charger de la communication entre process
+</li><li>
+<em>calc_store</em>	-> behavior gen_server charger de memoriser et restituer les valeur de variable et de fonctions
+</li><li>
+<em>calc</em>		-> fonctions d'analyse, de parse, de calcul...
+</li>
+
+
+<b>Evolution list</b> <br />
+<li>
+Assurer le focus clavier sur la zone de saisie par defaut --> done
+</li><li>
+Interpret userfunction in order to solve embedded userfunction before storing --> done
+</li><li>
+Correct the behavior of swapping variable: f(x,y)=x^2+y then g(x,y)=f(y,x) --> = "x^2+x" --> done
+</li><li>
+Associer la fonction = à la touche enter --> done
+</li><li>
+Modifier la touche f' pour qu'elle insert drv( --> done 
+</li><li>
+Refactoring de calcgui pour rendre plus generique la gestion des clicks boutons. Nécessitera la création d'un bouton Enter. --> done
+</li><li>
+Correction de la phase de simplification. --> in progress
+</li><li>
+Accepter une definition de fonction du type: f(x,y) = sin(x) --> done
+</li>

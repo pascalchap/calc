@@ -1,0 +1,350 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Module calc</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
+</head>
+<body bgcolor="white">
+<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<hr>
+
+<h1>Module calc</h1>
+<ul class="index"><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>
+
+
+<h2><a name="types">Data Types</a></h2>
+
+<h3 class="typedecl"><a name="type-print_par">print_par()</a></h3>
+<p><tt>print_par() = 40 | 41</tt></p>
+
+
+<h2><a name="index">Function Index</a></h2>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#arrg-2">arrg/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#arrg-3">arrg/3*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#checkuserfunc-2">checkuserfunc/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#chekleft-1">chekleft/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#comb-2">comb/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#comb2-2">comb2/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#derive-2">derive/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#drv-2">drv/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#evalfunc-2">evalfunc/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#evaluate-1">evaluate/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#evaluate1-1">evaluate1/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#evaluate2-2">evaluate2/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#fact-1">fact/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#fact-2">fact/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#frac-1">frac/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#getconst-1">getconst/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#getderive-2">getderive/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#getnum-1">getnum/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#getsubstitute-1">getsubstitute/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#getuserfunc-1">getuserfunc/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#getvalue-1">getvalue/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#getvarlist-1">getvarlist/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#getvarlist-2">getvarlist/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#int-1">int/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#level-1">level/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#level-3">level/3*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#liste_arg-3">liste_arg/3*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#par-2">par/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#parse-1">parse/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#parse_evaluate-1">parse_evaluate/1</a></td><td>The only exported function of this module is in charge to :
+   - parse a string representing a math expression
+   - evaluate as deep as possible the expression, replacing variables
+     and function by their stored value (if any) and performing all possible opération and simplification.</td></tr>
+<tr><td valign="top"><a href="#pow-2">pow/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#pow-3">pow/3*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#print-1">print/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#print-2">print/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#printOp-1">printOp/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#printpar-1">printpar/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#prio_add-2">prio_add/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#prio_arg-2">prio_arg/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#prio_assign-3">prio_assign/3*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#prio_func-2">prio_func/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#prio_mult-2">prio_mult/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#prio_power-2">prio_power/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#priorize-1">priorize/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#reduce-1">reduce/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#replace-3">replace/3*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#return_num-2">return_num/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#simplify-1">simplify/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#split-1">split/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#storeuserfunc-4">storeuserfunc/4*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#storevar-2">storevar/2*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#totuple-1">totuple/1*</a></td><td></td></tr>
+<tr><td valign="top"><a href="#totuple-2">totuple/2*</a></td><td></td></tr>
+</table>
+
+<h2><a name="functions">Function Details</a></h2>
+
+<h3 class="function"><a name="arrg-2">arrg/2 *</a></h3>
+<div class="spec">
+<p><tt>arrg(N::pos_integer(), K::pos_integer()) -&gt; integer()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="arrg-3">arrg/3 *</a></h3>
+<div class="spec">
+<p><tt>arrg(M::integer(), N::integer(), T::integer()) -&gt; integer()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="checkuserfunc-2">checkuserfunc/2 *</a></h3>
+<div class="spec">
+<p><tt>checkuserfunc(Def::term(), Listvar::[any(), ...]) -&gt; ok</tt><br></p>
+</div>
+
+<h3 class="function"><a name="chekleft-1">chekleft/1 *</a></h3>
+<div class="spec">
+<p><tt>chekleft(A::[any()]) -&gt; nonempty_maybe_improper_list()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="comb-2">comb/2 *</a></h3>
+<div class="spec">
+<p><tt>comb(N::pos_integer(), K::pos_integer()) -&gt; integer()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="comb2-2">comb2/2 *</a></h3>
+<div class="spec">
+<p><tt>comb2(K::pos_integer(), T::integer()) -&gt; integer()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="derive-2">derive/2 *</a></h3>
+<div class="spec">
+<p><tt>derive(Op1::{const, term()} | {minus, {const, term()} | {minus, {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}} | {num, term()} | {var, term()} | {func, {[any(), ...], term()}, [{term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, ...]} | {userfunc, term(), term()} | {op, [42 | 43 | 45 | 47 | 94, ...], {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}, {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}}} | {num, term()} | {var, term()} | {func, {[1..255, ...], term()}, [{const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}, ...]} | {userfunc, term(), term()} | {op, [42 | 43 | 45 | 47 | 94, ...], {const, term()} | {minus, {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}} | {num, term()} | {var, term()} | {func, {[any(), ...], term()}, [{term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, ...]} | {userfunc, term(), term()} | {op, [42 | 43 | 45 | 47 | 94, ...], {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}, {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}}, {const, term()} | {minus, {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}} | {num, term()} | {var, term()} | {func, {[any(), ...], term()}, [{term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, ...]} | {userfunc, term(), term()} | {op, [42 | 43 | 45 | 47 | 94, ...], {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}, {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}}}, N::term()) -&gt; {minus, {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, 0 | 1} | {func, {term(), term()}, [any(), ...]} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}} | {num, 0 | 1} | {func, {[any(), ...], math}, [{term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, ...]} | {op, [42 | 43 | 45 | 47 | 94, ...], {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, number()} | {func, {term(), term()}, [any(), ...]} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}, {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, [any(), ...] | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}}</tt><br></p>
+</div>
+
+<h3 class="function"><a name="drv-2">drv/2 *</a></h3>
+<div class="spec">
+<p><tt>drv(F::{const, term()} | {minus, {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}} | {num, term()} | {var, term()} | {func, {[any(), ...], term()}, [{term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, ...]} | {userfunc, term(), term()} | {op, [42 | 43 | 45 | 47 | 94, ...], {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}, {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}}, X::term()) -&gt; {minus, {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, 0 | 1} | {func, {term(), term()}, [any(), ...]} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}} | {num, 0 | 1} | {func, {[any(), ...], math}, [{term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, ...]} | {op, [42 | 43 | 45 | 47 | 94, ...], {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, number()} | {func, {term(), term()}, [any(), ...]} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}, {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, [any(), ...] | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}}</tt><br></p>
+</div>
+
+<h3 class="function"><a name="evalfunc-2">evalfunc/2 *</a></h3>
+<div class="spec">
+<p><tt>evalfunc(X1::{term(), term(), term()}, A::term()) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="evaluate-1">evaluate/1 *</a></h3>
+<div class="spec">
+<p><tt>evaluate(Exp::term()) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="evaluate1-1">evaluate1/1 *</a></h3>
+<div class="spec">
+<p><tt>evaluate1(R::{const, [101 | 105 | 112, ...]} | {minus, {const, [any(), ...]} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {assign, {term(), term()} | {term(), term(), term()}, term()} | {func, {term(), term()}, [any()]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}} | {num, term()} | {var, term()} | {assign, {var, term()} | {userfunc, term(), term()}, term()} | {func, {[any()], atom() | tuple()}, [{term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}]} | {userfunc, term(), term()} | {op, [1..255, ...], {const, [any(), ...]} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {assign, {term(), term()} | {term(), term(), term()}, term()} | {func, {term(), term()}, [any()]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}, {const, [any(), ...]} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {assign, {term(), term()} | {term(), term(), term()}, term()} | {func, {term(), term()}, [any()]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}}) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="evaluate2-2">evaluate2/2 *</a></h3>
+<div class="spec">
+<p><tt>evaluate2(A::term(), Exp::term()) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="fact-1">fact/1</a></h3>
+<div class="spec">
+<p><tt>fact(A::non_neg_integer()) -&gt; pos_integer()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="fact-2">fact/2 *</a></h3>
+<div class="spec">
+<p><tt>fact(A::non_neg_integer(), R::pos_integer()) -&gt; pos_integer()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="frac-1">frac/1</a></h3>
+<div class="spec">
+<p><tt>frac(N::number()) -&gt; number()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="getconst-1">getconst/1 *</a></h3>
+<div class="spec">
+<p><tt>getconst(X1::[101 | 105 | 112, ...]) -&gt; float()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="getderive-2">getderive/2 *</a></h3>
+<div class="spec">
+<p><tt>getderive(X1::[1..255, ...], A::{const, term()} | {minus, {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}} | {num, term()} | {var, term()} | {func, {[any(), ...], term()}, [{term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, ...]} | {userfunc, term(), term()} | {op, [42 | 43 | 45 | 47 | 94, ...], {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}, {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}}) -&gt; {minus, {func, {[any(), ...], math}, [{term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, ...]} | {op, [94, ...], {op, [any(), ...], {term(), term()}, {term(), term(), term(), term()}}, {num, float()}}} | {func, {[99 | 101 | 104 | 105 | 110 | 111 | 112 | 115 | 120, ...], math}, [{const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}, ...]} | {op, [42 | 47 | 94, ...], {num, number()} | {op, [43 | 45, ...], {num, 1} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()}}, {num, 1} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()}}}, {const, term()} | {minus, {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}} | {num, term()} | {var, term()} | {func, {[any(), ...], term()}, [{term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, ...]} | {userfunc, term(), term()} | {op, [42 | 43 | 45 | 47 | 94, ...], {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}, [{term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, ...] | {const, term()} | {minus, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, term()} | {func, {term(), term()}, [any(), ...]} | {userfunc, term(), term()} | {op, [any(), ...], {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}}}</tt><br></p>
+</div>
+
+<h3 class="function"><a name="getnum-1">getnum/1 *</a></h3>
+<div class="spec">
+<p><tt>getnum(X::[any(), ...]) -&gt; number()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="getsubstitute-1">getsubstitute/1 *</a></h3>
+<div class="spec">
+<p><tt>getsubstitute(X::[any(), ...]) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="getuserfunc-1">getuserfunc/1 *</a></h3>
+<div class="spec">
+<p><tt>getuserfunc(N::term()) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="getvalue-1">getvalue/1 *</a></h3>
+<div class="spec">
+<p><tt>getvalue(N::term()) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="getvarlist-1">getvarlist/1 *</a></h3>
+<div class="spec">
+<p><tt>getvarlist(S::term()) -&gt; [any()]</tt><br></p>
+</div>
+
+<h3 class="function"><a name="getvarlist-2">getvarlist/2 *</a></h3>
+<div class="spec">
+<p><tt>getvarlist(B::term(), Acc::term()) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="int-1">int/1</a></h3>
+<div class="spec">
+<p><tt>int(N::number()) -&gt; integer()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="level-1">level/1 *</a></h3>
+<div class="spec">
+<p><tt>level(L::[any()]) -&gt; [any()] | tuple()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="level-3">level/3 *</a></h3>
+<div class="spec">
+<p><tt>level(A::maybe_improper_list() | tuple(), X2::[any()], I::0 | 1) -&gt; [any()] | tuple()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="liste_arg-3">liste_arg/3 *</a></h3>
+<div class="spec">
+<p><tt>liste_arg(R::[any()], C::[any()], D::[[any()]]) -&gt; [[any()]]</tt><br></p>
+</div>
+
+<h3 class="function"><a name="par-2">par/2 *</a></h3>
+<div class="spec">
+<p><tt>par(X1::boolean(), X2::f | o) -&gt; [<a href="#type-print_par">print_par()</a>]</tt><br></p>
+</div>
+
+<h3 class="function"><a name="parse-1">parse/1 *</a></h3>
+<div class="spec">
+<p><tt>parse(L::binary() | maybe_improper_list(binary() | maybe_improper_list(any(), binary() | []) | integer(), binary() | [])) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="parse_evaluate-1">parse_evaluate/1</a></h3>
+<div class="spec">
+<p><tt>parse_evaluate(T::term()) -&gt; any()</tt><br></p>
+</div><p>The only exported function of this module is in charge to :
+   - parse a string representing a math expression
+   - evaluate as deep as possible the expression, replacing variables
+     and function by their stored value (if any) and performing all possible opération and simplification.
+   - return the result in a printable format</p>
+
+<h3 class="function"><a name="pow-2">pow/2 *</a></h3>
+<div class="spec">
+<p><tt>pow(X::term(), N::number()) -&gt; number()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="pow-3">pow/3 *</a></h3>
+<div class="spec">
+<p><tt>pow(X::integer(), N::non_neg_integer(), R::integer()) -&gt; integer()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="print-1">print/1 *</a></h3>
+<div class="spec">
+<p><tt>print(A::nonempty_maybe_improper_list() | number() | {const, term()} | {error, term()} | {minus, nonempty_maybe_improper_list() | number() | {const, term()} | {error, term()} | {minus, nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, [any()]} | {func, {term(), term()}, [any(), ...]} | {userfunc, [any()], [any(), ...]} | {op, [any()], nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}} | {num, term()} | {var, [any()]} | {func, {[any()], term()}, [nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, ...]} | {userfunc, [any()], [nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, ...]} | {op, [any()], nonempty_maybe_improper_list() | number() | {const, term()} | {error, term()} | {minus, nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, [any()]} | {func, {term(), term()}, [any(), ...]} | {userfunc, [any()], [any(), ...]} | {op, [any()], nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}, nonempty_maybe_improper_list() | number() | {const, term()} | {error, term()} | {minus, nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, [any()]} | {func, {term(), term()}, [any(), ...]} | {userfunc, [any()], [any(), ...]} | {op, [any()], nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}}) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="print-2">print/2 *</a></h3>
+<div class="spec">
+<p><tt>print(A::nonempty_maybe_improper_list() | number() | {const, term()} | {error, term()} | {minus, nonempty_maybe_improper_list() | number() | {const, term()} | {error, term()} | {minus, nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, [any()]} | {func, {term(), term()}, [any(), ...]} | {userfunc, [any()], [any(), ...]} | {op, [any()], nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}} | {num, term()} | {var, [any()]} | {func, {[any()], term()}, [nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, ...]} | {userfunc, [any()], [nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, ...]} | {op, [any()], nonempty_maybe_improper_list() | number() | {const, term()} | {error, term()} | {minus, nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, [any()]} | {func, {term(), term()}, [any(), ...]} | {userfunc, [any()], [any(), ...]} | {op, [any()], nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}, nonempty_maybe_improper_list() | number() | {const, term()} | {error, term()} | {minus, nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, [any()]} | {func, {term(), term()}, [any(), ...]} | {userfunc, [any()], [any(), ...]} | {op, [any()], nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}}, P::2 | 3 | 4 | 5 | 10) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="printOp-1">printOp/1 *</a></h3>
+<div class="spec">
+<p><tt>printOp(Op::[any()]) -&gt; [any(), ...]</tt><br></p>
+</div>
+
+<h3 class="function"><a name="printpar-1">printpar/1 *</a></h3>
+<div class="spec">
+<p><tt>printpar(Q::[nonempty_maybe_improper_list() | number() | {const, term()} | {error, term()} | {minus, nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}} | {num, term()} | {var, [any()]} | {func, {term(), term()}, [any(), ...]} | {userfunc, [any()], [any(), ...]} | {op, [any()], nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}, nonempty_maybe_improper_list() | number() | {term(), term()} | {term(), term(), term()} | {term(), term(), term(), term()}}, ...]) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="prio_add-2">prio_add/2 *</a></h3>
+<div class="spec">
+<p><tt>prio_add(T::term(), L::[any()]) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="prio_arg-2">prio_arg/2 *</a></h3>
+<div class="spec">
+<p><tt>prio_arg(T::term(), L::[any()]) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="prio_assign-3">prio_assign/3 *</a></h3>
+<div class="spec">
+<p><tt>prio_assign(T::[any()], L::[any()], B::boolean()) -&gt; [any()]</tt><br></p>
+</div>
+
+<h3 class="function"><a name="prio_func-2">prio_func/2 *</a></h3>
+<div class="spec">
+<p><tt>prio_func(T::term(), L::[any()]) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="prio_mult-2">prio_mult/2 *</a></h3>
+<div class="spec">
+<p><tt>prio_mult(T::term(), L::[any()]) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="prio_power-2">prio_power/2 *</a></h3>
+<div class="spec">
+<p><tt>prio_power(T::term(), L::[any()]) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="priorize-1">priorize/1 *</a></h3>
+<div class="spec">
+<p><tt>priorize(L::[any()]) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="reduce-1">reduce/1 *</a></h3>
+<div class="spec">
+<p><tt>reduce(A::term()) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="replace-3">replace/3 *</a></h3>
+<div class="spec">
+<p><tt>replace(N::term(), Rn::term(), Ro::term()) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="return_num-2">return_num/2 *</a></h3>
+<div class="spec">
+<p><tt>return_num(A::number(), B::integer()) -&gt; number()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="simplify-1">simplify/1 *</a></h3>
+<div class="spec">
+<p><tt>simplify(A::term()) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="split-1">split/1 *</a></h3>
+<div class="spec">
+<p><tt>split(T::binary() | maybe_improper_list(binary() | maybe_improper_list(any(), binary() | []) | integer(), binary() | [])) -&gt; [any()]</tt><br></p>
+</div>
+
+<h3 class="function"><a name="storeuserfunc-4">storeuserfunc/4 *</a></h3>
+<div class="spec">
+<p><tt>storeuserfunc(Name::term(), Par::term(), Desc::term(), Text::term()) -&gt; [[any()] | char()]</tt><br></p>
+</div>
+
+<h3 class="function"><a name="storevar-2">storevar/2 *</a></h3>
+<div class="spec">
+<p><tt>storevar(Name::term(), Value::term()) -&gt; [[any()] | char()]</tt><br></p>
+</div>
+
+<h3 class="function"><a name="totuple-1">totuple/1 *</a></h3>
+<div class="spec">
+<p><tt>totuple(X::term()) -&gt; any()</tt><br></p>
+</div>
+
+<h3 class="function"><a name="totuple-2">totuple/2 *</a></h3>
+<div class="spec">
+<p><tt>totuple(T::[any()], A::[any()]) -&gt; [any()]</tt><br></p>
+</div>
+<hr>
+
+<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<p><i>Generated by EDoc, Aug 7 2013, 13:46:47.</i></p>
+</body>
+</html>

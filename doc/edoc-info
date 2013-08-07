@@ -1,0 +1,3 @@
+{application,calc}.
+{packages,[]}.
+{modules,[calc,calc_app,calc_server,calc_store,calc_sup,calcgui]}.

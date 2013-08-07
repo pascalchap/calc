@@ -1,4 +1,4 @@
--include("C:\\Program Files\\erl5.9\\lib\\wx-0.99.1\\include\\wx.hrl").
+-include("D:\\program\\erl5.9.2\\lib\\wx-0.99.2\\include\\wx.hrl").
 
 %% GUI Id and definitions
 -define(QUIT,1).
