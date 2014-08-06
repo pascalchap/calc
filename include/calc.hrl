@@ -16,6 +16,8 @@
 
 -define(ERR,60).
 
+-type button_int() :: 100..146.
+
 -define(ZERO,100).
 -define(UN,101).
 -define(DEUX,102).
@@ -65,6 +67,8 @@
 -define(RES,146).
 
 
+-type button_def() :: {button_int(),string(),string()}.
+
 -define(B_ZERO,{?ZERO,"0","0"}).
 -define(B_UN,{?UN,"1","1"}).
 -define(B_DEUX,{?DEUX,"2","2"}).
@@ -112,6 +116,12 @@
 -define(B_ATANH,{?ATANH,"atanh","atanh("}).
 -define(B_ENTER,{?ENTER,"enter",null}).
 -define(B_RES,{?RES," ",null}).
+
+-type split_term() :: {func, {string(), atom()}} | {sep | const, string()} | {num, number()} | {new, string()} .
+-type level_term() :: {func, {string(), atom()}} | {sep | const, string()} | {num, number()} | {var, string()} | {userfunc, string()} | assign .
+-type level_terms() :: [level_term() | level_terms()].
+-type tree_term() :: {op, string(), tree_term(), tree_term()} | {minus, tree_term()} | {func, {string(), atom()}, [tree_term(), ...]} |
+                     {userfunc, string(), [tree_term(), ...]} | {num, number()} | {var, string()}.
 
 %% KEYWORDS
 -define(KEYWORDS,[

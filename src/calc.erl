@@ -1,6 +1,6 @@
 -module(calc).
 
-%% -compile(export_all).
+-compile(export_all).
 
 -export([fact/1, frac/1, int/1, parse_evaluate/1]).
 
@@ -12,9 +12,9 @@
 %% @doc The only exported function of this module is in charge to :
 %%  - parse a string representing a math expression
 %%  - evaluate as deep as possible the expression, replacing variables
-%%    and function by their stored value (if any) and performing all possible opération and simplification.
+%%    and function by their stored value (if any) and performing all possible opÃ©ration and simplification.
 %%  - return the result in a printable format
--spec parse_evaluate(_) -> any().
+-spec parse_evaluate(string()) -> string().
 parse_evaluate(T) -> 
     R = (catch evaluate(parse(T))),
     R1 = case R of
@@ -34,8 +34,11 @@ parse_evaluate(T) ->
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
--spec parse(binary() | maybe_improper_list(binary() | maybe_improper_list(any(),binary() | []) | integer(),binary() | [])) -> any().
-parse(L) -> L1 = split(L), L2 = level(L1), priorize(L2).
+-spec parse(string()) -> any().
+parse(L) -> 
+  L1 = split(L),
+  {value,L2} = level(L1),
+  priorize(L2).
 
 -spec evaluate(_) -> any().
 evaluate(Exp) ->
@@ -117,7 +120,7 @@ storevar(Name, Value) ->
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% split the string in pieces, identify and translate them
 
--spec split(binary() | maybe_improper_list(binary() | maybe_improper_list(any(),binary() | []) | integer(),binary() | [])) -> [any()].
+-spec split(string()) -> [split_term()].
 split(T) ->
     {ok, M} = (?MS),
     {match, L} = re:run(T, M, [global]),
@@ -168,17 +171,17 @@ getnum(X) ->
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% management of parenthesis
 
--spec level([any()]) -> [any()] | tuple().
+-spec level([split_term()]) -> {value,level_terms()} | {error,string()}.
 level(L) -> level(L, [], 0).
 
--spec level(maybe_improper_list() | tuple(),[any()],0 | 1) -> [any()] | tuple().
+-spec level([split_term()], level_terms(), 0|1) -> {value,level_terms()} | {error,string()}.
 level([], A, 0) ->
-    lists:reverse(A);              %% end of the analyse
+    {value,lists:reverse(A)};              %% end of the analyse
 level([], _A, _I) ->
     throw({error,
        "trop de ("});  %% end of the list encountered while analysing a sublevel
-level(A, [], 0) when is_tuple(A) ->
-    A;     %% isolated term like {num,15} in 16#F
+%%level(A, [], 0) when is_tuple(A) ->
+%%    A;     %% isolated term like {num,15} in 16#F
 level([{sep, ")"} | T], A, 1) ->
     {lists:reverse(A), T}; %% close current level
 level([{sep, ")"} | _T], _A, 0) ->
@@ -190,22 +193,20 @@ level([{new, N}, {sep, "("} | T], A,
            1),                      %% analyse sublevel
     level(R, [L, {userfunc, N} | A],
       C);      %% then continue
-level([{sep, "("} | T], A,
-      C) ->                             %% at each "("
-    {L, R} = level(T, [],
-           1),                      %% analyse a new sublevel
-    level(R, [L | A],
-      C);                                   %% then continue
+level([{sep, "("} | T], A, C) ->    %% at each "("
+    {L, R} = level(T, [], 1),       %% analyse a new sublevel
+    level(R, [L | A], C);                                   %% then continue
 level([{new, N} | T], A, C) ->
-    level(T, [{var, N} | A],
-      C);       %% remaining new name should be variables
-level([H | T], A, C) ->
-    level(T, [level(H, [], 0) | A], C).
+    level(T, [{var, N} | A], C);       %% remaining new name should be variables
+level([H | T], A, C) when is_tuple(H) ->
+    level(T, [H | A], C).
+%%level([H | T], A, C) ->
+%%    level(T, [level(H, [], 0) | A], C).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% management of operator priority
 
--spec priorize([any()]) -> any().
+-spec priorize(level_terms()) -> tree_term().
 priorize(L) ->
     L0 = prio_assign(L, [], false),
     L1 = prio_func(L0, []),
@@ -215,7 +216,7 @@ priorize(L) ->
     L4 = prio_add(L3, []),
     totuple(L4).
 
--spec prio_assign([any()],[any()],boolean()) -> [any()].
+-spec prio_assign(level_terms(), level_terms(), boolean()) -> level_terms() .
 prio_assign([], L, _) -> lists:reverse(L);
 prio_assign([{sep, "="} | T], R, false) ->
     Left = lists:reverse(R),
@@ -227,22 +228,17 @@ prio_assign([H | T], R, B) ->
     prio_assign(T, [H | R], B).
 
 %% condition de fin
--spec prio_func(_,[any()]) -> any().
+-spec prio_func(level_terms(), level_terms()) -> level_terms().
 prio_func([], L) -> lists:reverse(L);
 prio_func(T, []) when not is_list(T) -> T;
 %% pour une fonction, identifier la liste de parametre
 prio_func([{M, F}, A | T], R)
     when M == func; M == userfunc ->
     prio_func(T, [[M, F, prio_func(A, [])] | R]);
-%% il ne doit plus rester de "new"
-%% prio_func([{new,_H}|_T],_R) ->
-%%     throw({error,"unexpected term"});
-%%prio_func([{sep,","}|T],R) ->
-%%  [prio_func(T,[])] ++ [R];
 prio_func([H | T], R) ->
     prio_func(T, [prio_func(H, []) | R]).
 
--spec prio_arg(_,[any()]) -> any().
+-spec prio_arg(level_terms(), level_terms()) -> level_terms().
 prio_arg([], L) -> lists:reverse(L);
 prio_arg(T, []) when not is_list(T) -> T;
 prio_arg([[M, F, A] | T], R)
@@ -261,7 +257,7 @@ liste_arg([{sep, ","} | R], C, D) ->
     liste_arg(R, [], [lists:reverse(C) | D]);
 liste_arg([H | R], C, D) -> liste_arg(R, [H | C], D).
 
--spec prio_power(_,[any()]) -> any().
+-spec prio_power(level_terms(), level_terms()) -> level_terms().
 prio_power([], L) -> lists:reverse(L);
 prio_power(T, []) when not is_list(T) -> T;
 prio_power([A, {sep, "^"}, B | T], R) ->
@@ -272,15 +268,15 @@ prio_power([A, {sep, "^"}, B | T], R) ->
 prio_power([H | T], R) ->
     prio_power(T, [prio_power(H, []) | R]).
 
--spec prio_mult(_,[any()]) -> any().
+-spec prio_mult(level_terms(), level_terms()) -> level_terms().
 prio_mult([], L) -> lists:reverse(L);
 prio_mult(T, []) when not is_list(T) -> T;
-%% les - et + unaire (en début de liste) sont équivalent à une multiplication par + ou - 1
+%% les - et + unaire (en dÃ©but de liste) sont Ã©quivalent Ã  une multiplication par + ou - 1
 prio_mult([{sep, "-"}, A | T], []) ->
     prio_mult([[minus, prio_mult(A, [])] | T], []);
 prio_mult([{sep, "+"}, A | T], []) ->
     prio_mult([prio_mult(A, []) | T], []);
-%% dans un niveau de parenthese donné, on execute ces opération de gauche à droite, dans l'ordre ou on les rencontre
+%% dans un niveau de parenthese donnÃ©, on execute ces opÃ©ration de gauche Ã  droite, dans l'ordre ou on les rencontre
 prio_mult([A, {sep, Op}, B | T], R)
     when Op == "*";
      Op == "/";
@@ -294,7 +290,7 @@ prio_mult([A, {sep, Op}, B | T], R)
 prio_mult([H | T], R) ->
     prio_mult(T, [prio_mult(H, []) | R]).
 
--spec prio_add(_,[any()]) -> any().
+-spec prio_add(level_terms(), level_terms()) -> level_terms().
 prio_add([], L) -> lists:reverse(L);
 prio_add(T, []) when not is_list(T) -> T;
 %% prio_add([{sep,","}|T],A) -> prio_add(T,A);
@@ -306,7 +302,7 @@ prio_add([A, {sep, Op}, B | T], R)
 prio_add([H | T], R) ->
     prio_add(T, [prio_add(H, []) | R]).
 
--spec totuple(_) -> any().
+-spec totuple(level_terms()) -> tree_term().
 totuple(X) when not is_list(X) -> X;
 totuple([X]) when not is_integer(X) -> totuple(X);
 totuple([minus, A]) -> {minus, totuple(A)};

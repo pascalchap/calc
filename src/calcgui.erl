@@ -2,7 +2,7 @@
 
 %% @doc
 %% @todo Utiliser un server pour stocker les informations d'affichage et permettre la gestion base 2,8,10,16.
-
+%% @todo Coriger le problème d'affichage tronqué des grand nombre (fact(1000))
 -vsn("v0.1 alpha --").
 
 -export([init/1, handle_info/2, handle_call/3, handle_cast/2, handle_event/2, 
