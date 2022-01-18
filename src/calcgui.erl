@@ -1,5 +1,5 @@
 -module(calcgui).
-
+%% coding: latin-1
 %% @doc
 %% @todo Utiliser un server pour stocker les informations d'affichage et permettre la gestion base 2,8,10,16.
 %% @todo Coriger le problème d'affichage tronqué des grand nombre (fact(1000))
@@ -53,7 +53,7 @@ handle_info(M,S = #state{frame=F}) ->
     wxFrame:setStatusText(F,M1,[]),
     {noreply, S}.
 
--spec handle_event(#wx{id::'undefined' | integer(),obj::'undefined' | {'wx_ref',_,_,_},event::'undefined' | tuple()},_) -> {'noreply',_} | {'stop','shutdown',#state{}}.
+%-spec handle_event(#wx{id::'undefined' | integer(),obj::'undefined' | {'wx_ref',_,_,_},event::'undefined' | tuple()},_) -> {'noreply',_} | {'stop','shutdown',#state{}}.
 handle_event(#wx{event=#wxClose{}},S = #state{frame=F}) ->
     catch wxWindow:'Destroy'(F),
     {stop, shutdown, S};

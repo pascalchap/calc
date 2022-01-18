@@ -1,8 +1,8 @@
 -module(calc).
 
--compile(export_all).
+%-compile(export_all).
 
--export([fact/1, frac/1, int/1, parse_evaluate/1]).
+-export([parse_evaluate/1]).
 
 
 -include("../include/calc.hrl").
@@ -42,7 +42,8 @@ parse(L) ->
 
 -spec evaluate(_) -> any().
 evaluate(Exp) ->
-    A = (catch evaluate1(Exp)), evaluate2(A, Exp).
+    A = (catch evaluate1(Exp)),
+    evaluate2(A, Exp).
 
 -spec evaluate1({'const',[101 | 105 | 112,...]} | {'minus',{'const',[any(),...]} | {'minus',{_,_} | {_,_,_} | {_,_,_,_}} | {'num',_} | {'var',_} | {'assign',{_,_} | {_,_,_},_} | {'func',{_,_},[any()]} | {'userfunc',_,_} | {'op',[any(),...],{_,_} | {_,_,_} | {_,_,_,_},{_,_} | {_,_,_} | {_,_,_,_}}} | {'num',_} | {'var',_} | {'assign',{'var',_} | {'userfunc',_,_},_} | {'func',{[any()],atom() | tuple()},[{_,_} | {_,_,_} | {_,_,_,_}]} | {'userfunc',_,_} | {'op',[1..255,...],{'const',[any(),...]} | {'minus',{_,_} | {_,_,_} | {_,_,_,_}} | {'num',_} | {'var',_} | {'assign',{_,_} | {_,_,_},_} | {'func',{_,_},[any()]} | {'userfunc',_,_} | {'op',[any(),...],{_,_} | {_,_,_} | {_,_,_,_},{_,_} | {_,_,_} | {_,_,_,_}},{'const',[any(),...]} | {'minus',{_,_} | {_,_,_} | {_,_,_,_}} | {'num',_} | {'var',_} | {'assign',{_,_} | {_,_,_},_} | {'func',{_,_},[any()]} | {'userfunc',_,_} | {'op',[any(),...],{_,_} | {_,_,_} | {_,_,_,_},{_,_} | {_,_,_} | {_,_,_,_}}}) -> any().
 evaluate1({minus, A}) -> -evaluate1(A);
@@ -367,7 +368,7 @@ comb2(1, T) -> T;
 comb2(K, T) -> comb2(K - 1, T div K).
 
 -spec int(number()) -> integer().
-int(N) -> round(N - 5.0e-1).
+int(N) -> floor(N).
 
 -spec frac(number()) -> number().
 frac(N) -> N - int(N).

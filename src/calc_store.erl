@@ -42,7 +42,7 @@ start_link() ->
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
--spec init([]) -> {'ok',#state{var::dict(),func::dict()}}.
+-spec init([]) -> {'ok',#state{var::dict:dict(),func::dict:dict()}}.
 
 init([]) -> 
     %% register(?MODULE,self()),
